@@ -1,23 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Table from "./Table/Table";
+import "./App.css";
+import Form from "./Form/Form";
+import { Routes, Route } from "react-router-dom";
+import EditUser from "./Edit/EditUser";
 
 function App() {
+  const [formList, setFormList] = useState([
+    {
+      id: 1,
+      name: "Boobalan",
+      email: "boobalan@gmail.com",
+      content: "I am WebDeveloper and Learning React js",
+    },
+    {
+      id: 2,
+      name: "Boo",
+      email: "boo@gmail.com",
+      content: "I am WebDeveloper",
+    },
+  ]);
+
+
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<Table formList={formList} setFormList={setFormList} />}
+        />
+        <Route
+          path="/form"
+          element={<Form formList={formList} setFormList={setFormList} />}
+        />
+        <Route
+          path="/edit/:id"
+          element={<EditUser formList={formList} setFormList={setFormList} />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="error">
+      <img
+        src="https://d1ivubrj2a21dq.cloudfront.net/wp-content/uploads/2021/09/22115856/ezgif.com-crop.gif"
+        alt="404-Not-Found"
+      />
     </div>
   );
 }
