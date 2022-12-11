@@ -18,8 +18,9 @@ const TableList = ({ formList, setFormList }) => {
   return (
     <>
       <tbody>
-        {formList.map((user) => (
-          <tr key={user.id}>
+        {formList.map((user,index) => (
+          <tr key={index}>
+            <td>{user.id}</td>
             <td>{user.name}</td>
             <td>{user.email}</td>
             <td>{user.content}</td>

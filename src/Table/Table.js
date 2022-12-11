@@ -16,6 +16,7 @@ const Table = ({ formList, setFormList }) => {
               <table className="table table-bordered">
                 <thead className="thead-dark">
                   <tr>
+                    <th scope="col">S.No</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">About You</th>

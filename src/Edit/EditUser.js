@@ -1,39 +1,64 @@
-import "./EditUser.css";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import * as yup from "yup";
+import { useParams } from 'react-router-dom';
+import "./EditUser.css"
 
-const EditUser = ({ formList, setFormList }) => {
-  const [user, setUser] = useState(formList);
+const formvalidationSchema = yup.object({
+    id: yup
+        .number()
+        .required(),
+    name: yup
+        .string()
+        .required().min(4),
+    email: yup
+        .string()
+        .required(),
+    content: yup
+        .string()
+        .required().min(5),
+   
+})
+const EditUser = ({formList}) => {
+
+  const params = useParams();
+  const Index = formList.findIndex((item) => item.id == params.id);
+  const details = formList[Index];
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setUser(...formList);
-    console.log(...formList);
-  }, [formList]);
+  const formik = useFormik({
+      initialValues: {
+          id: details.id,
+          name: details.name,
+          email: details.email,
+          content: details.content,
+      },
+      validationSchema: formvalidationSchema,
+      onSubmit: (values) => {
+          formList.splice(Index, 1, values);
+          navigate("/");
+      },
+  })
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-
-    setUser({ ...user, [name]: value });
-  };
-
-  const addForm = (event) => {
-    event.preventDefault();
-    //   const newForm = {
-    //     id:id,
-    //     name:name,
-    //    email:email,
-    //     content:content,
-    //   };
-    //   setFormList([...formList, newForm]);
-    navigate("/");
-  };
 
   return (
     <>
-      <form className="form-container">
+      <form className="form-container" onSubmit={formik.handleSubmit}>
         <h2 className="text-center my-5">Update Form</h2>
         <div className="container">
+          <div className="form-group">
+            <input
+              type="number"
+              className="form-control"
+              id="Input"
+              placeholder="Id"
+              name="id"
+              value={formik.values.id}
+              onChange={formik.handleChange}
+            />
+          </div>
           <div className="form-group">
             <input
               type="text"
@@ -41,8 +66,8 @@ const EditUser = ({ formList, setFormList }) => {
               id="Input"
               placeholder="Name"
               name="name"
-              value={user.name}
-              onChange={handleInputChange}
+              value={formik.values.name}
+              onChange={formik.handleChange}
             />
           </div>
           <div className="form-group">
@@ -52,8 +77,8 @@ const EditUser = ({ formList, setFormList }) => {
               id="Input2"
               placeholder="Email"
               name="email"
-              value={user.email}
-              onChange={handleInputChange}
+              value={formik.values.email}
+              onChange={formik.handleChange}
             />
           </div>
           <div className="form-group">
@@ -63,19 +88,19 @@ const EditUser = ({ formList, setFormList }) => {
               rows="3"
               placeholder="Write something about you..."
               name="content"
-              value={user.content}
-              onChange={handleInputChange}
+              value={formik.values.content}
+              onChange={formik.handleChange}
             ></textarea>
           </div>
         </div>
         <div className="c-3">
-          <button className="btn btn-primary create-btn" onClick={addForm}>
+          <button className="btn btn-primary create-btn" >
             Update
           </button>
         </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default EditUser;
+export default EditUser

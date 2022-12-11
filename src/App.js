@@ -15,8 +15,8 @@ function App() {
     },
     {
       id: 2,
-      name: "Boo",
-      email: "boo@gmail.com",
+      name: "Arun",
+      email: "arun@gmail.com",
       content: "I am WebDeveloper",
     },
   ]);
@@ -37,7 +37,7 @@ function App() {
         />
         <Route
           path="/edit/:id"
-          element={<EditUser formList={formList} setFormList={setFormList} />}
+          element={<EditUser formList={formList} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
